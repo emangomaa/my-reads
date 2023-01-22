@@ -4,6 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import React, {useState , useEffect} from 'react'
 import Categories from './Categories';
 import Search from './Search';
+import NotFound from './NotFound'
 import {Route,Routes } from 'react-router-dom';
 function App() {
   // TODO : inaial state of books 
@@ -16,14 +17,20 @@ function App() {
       });
   },[])
  
-  const updateBooks = ()=>{
-    BooksAPI.update()
+  const updateBooks = (book,newSelf)=>{
+    BooksAPI.update(book,newSelf)
   }
+
+  BooksAPI.getAll().then(res=>{
+    setBooks(res)
+  });
+  
   // const UpdateBooksContext = React.createContext(updateBooks)
   return (
     <Routes>
-      <Route path='/' element= {<Categories books={books}/>}/>
-      <Route path='/search' element={<Search books={books}/>}/>
+      <Route path='/' element= {<Categories books={books} updateBooks={updateBooks}/>}/>
+      <Route path='/search' element={<Search books={books} updateBooks={updateBooks}/>}/>
+      <Route path='*' element={<NotFound/>}/>
     </Routes>
         
   );
