@@ -3,6 +3,8 @@ import './App.css';
 import * as BooksAPI from './BooksAPI'
 import React, {useState , useEffect} from 'react'
 import Categories from './Categories';
+import Search from './Search';
+import {Route,Routes } from 'react-router-dom';
 function App() {
   // TODO : inaial state of books 
   const [books,setBooks] = useState([])
@@ -15,15 +17,15 @@ function App() {
   },[])
  
   const updateBooks = ()=>{
+    BooksAPI.update()
   }
   // const UpdateBooksContext = React.createContext(updateBooks)
   return (
-    <div className="App">
-      {/* <UpdateBooksContext.Provider value={updateBooks}> */}
-        <Categories books={books}/>
-      {/* </UpdateBooksContext.Provider> */}
-      
-    </div>
+    <Routes>
+      <Route path='/' element= {<Categories books={books}/>}/>
+      <Route path='/search' element={<Search books={books}/>}/>
+    </Routes>
+        
   );
 }
 

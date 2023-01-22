@@ -1,5 +1,5 @@
 import BooksShelf from "./BooksShelf";
-
+import { Link } from "react-router-dom";
 const Categories = ({books})=>{
   const categories = ['currentlyReading','wantToRead','read']
     return(
@@ -13,7 +13,7 @@ const Categories = ({books})=>{
             }
         </div>
         <div className="open-search">
-            {/* <a onClick={() => setShowSearchpage(!showSearchPage)}>Add a book</a> */}
+            <Link to='./search' ></Link>
           </div>
       </div>
     )
