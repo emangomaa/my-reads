@@ -1,8 +1,9 @@
 
-const Book = ({book,updateBook})=>{
+import PropTypes from 'prop-types'
+const Book = ({book,updateBooks})=>{
     const updateShelf = (e)=>{
         // console.log(e)
-        updateBook(book,e.target.value)
+        updateBooks(book,e.target.value)
     }
     return(
         <div className="book">
@@ -18,7 +19,7 @@ const Book = ({book,updateBook})=>{
                 }}
                 ></div>
                 <div className="book-shelf-changer">
-                    <select defaultValue={book.shelf} onChange={updateShelf}>
+                    <select value={book.shelf} onChange={updateShelf}>
                         <option value="none" disabled>
                         Move to...
                         </option>
@@ -31,10 +32,13 @@ const Book = ({book,updateBook})=>{
                     </select>
                 </div>
             </div>
-            <div className="book-title">{book.title}</div>
-            <div className="book-authors">{book.authors[0]}</div>
+            <div className="book-title">{book?.title}</div>
+            <div className="book-authors">{book?.authors[0]}</div>
         </div>
     )
 }
-
+Book.propTypes={
+    book:PropTypes.object.isRequired,
+    updateBooks:PropTypes.func.isRequired
+  }
 export default Book;
