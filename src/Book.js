@@ -1,4 +1,3 @@
-import ShelfChanger from "./ShelfChanger";
 
 const Book = ({book,updateBook})=>{
     const updateShelf = (e)=>{
