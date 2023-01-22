@@ -1,27 +1,40 @@
 
 import { Link } from "react-router-dom";
-import { useState ,useEffect} from "react";
+import { useState} from "react";
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 import Book from "./Book";
-const Search = ({books})=>{
+const Search = ({books ,updateBooks})=>{
 
   const [searchBooks,setSearchBooks] = useState([])
   const[searchQuery,setSearchQuery] = useState('')
+  
+  
   const handleQuery = (e)=>{
-      setSearchQuery(e.target.value)
+    setSearchQuery(e.target.value)
+
+    getSeachBooks(searchQuery)
+}
+
+const getSeachBooks = (query)=>{
+
+  if(query.length === 0){
+    setSearchBooks([])
+  }
+  else{
+    BooksAPI.search(query).then(res =>{
+      if(res.error){
+        setSearchBooks([])
+      }
+      else{
+        setSearchBooks(res)
+      }
+    })
   }
 
-  // useEffect(()=>{
-  //   const time = setTimeout(() => {
-  //     BooksAPI.search(searchQuery,20).then(res => {
-  //       setSearchBooks(res)
-  //     })
-  //   }, 3000);
+}
+  
 
-  //   return ()=>{
-  //     clearTimeout(time)
-  //   }
-  // },[searchQuery])
 
     return(
         <div className="search-books">
@@ -44,11 +57,28 @@ const Search = ({books})=>{
           <div className="search-books-results">
             <ol className="books-grid">
               {
-                searchBooks.map(book=><Book key={book.id} book={book}/>)
+              
+                searchBooks.map(searchBook=>{
+                  
+                  books.forEach(book =>{
+                    
+                    if(book.id !== searchBook.id){
+                      searchBook.shelf ='None' ;
+                    }
+                    else{
+                      searchBook.shelf = book.shelf ;
+                    }
+                  })
+                  return <Book key={searchBook.id} book={searchBook} updateBooks={updateBooks}/>
+                })
               }
             </ol>
           </div>
         </div>
     )
+}
+Search.propTypes={
+  books:PropTypes.array.isRequired,
+  updateBooks:PropTypes.func.isRequired
 }
 export default Search;
